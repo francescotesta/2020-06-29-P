@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.PremierLeague.model.Match;
 import it.polito.tdp.PremierLeague.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,13 +41,13 @@ public class FXMLController {
     private TextField txtMinuti; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbMese"
-    private ComboBox<?> cmbMese; // Value injected by FXMLLoader
+    private ComboBox<Integer> cmbMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbM1"
-    private ComboBox<?> cmbM1; // Value injected by FXMLLoader
+    private ComboBox<Match> cmbM1; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbM2"
-    private ComboBox<?> cmbM2; // Value injected by FXMLLoader
+    private ComboBox<Match> cmbM2; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
@@ -53,15 +55,24 @@ public class FXMLController {
     @FXML
     void doConnessioneMassima(ActionEvent event) {
     	
+    	
     }
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
     	
+    	txtResult.appendText(model.creaGrafo(cmbMese.getValue(), Integer.parseInt(txtMinuti.getText())));
+    	cmbM1.getItems().addAll(model.getMatchCombo());
+    	cmbM2.getItems().addAll(model.getMatchCombo());
     }
 
     @FXML
     void doCollegamento(ActionEvent event) {
+    	
+    	List<Match> r = model.cerca(cmbM1.getValue(), cmbM2.getValue());
+    	for(Match m:r) {
+    		txtResult.appendText(m+"\n");
+    	}
     	
     }
 
@@ -79,6 +90,10 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	
+    	for(int i = 1; i<12; i++) {
+    		cmbMese.getItems().add(i);
+    	}
   
     }
     
